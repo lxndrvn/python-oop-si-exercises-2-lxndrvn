@@ -19,8 +19,15 @@ class Applicant():
     # }, ...]
     @classmethod
     def _4_specific_applicant_by_first_name(cls):
-        pass
-
+        applicants = Applicant.get_all()
+        full_names = []
+        for applicant in applicants:
+            if applicant.first_name == "Carol":
+                full_name = {}
+                full_name["full_name"] = applicant.first_name + " " + applicant.last_name
+                full_names.append(full_name)
+        return full_names
+            
     # Return the full name, as a full_name property of all the applicants, whose email ends with '@adipiscingenimmi.edu'
     # returns: list of dictionaries
     # example: [{
@@ -28,7 +35,14 @@ class Applicant():
     # }, ...]
     @classmethod
     def _5_specific_applicant_by_email_domain(cls):
-        pass
+        applicants = Applicant.get_all()
+        full_names = []
+        for applicant in applicants:
+            if "dipiscingenimmi.edu" in applicant.email:
+                full_name = {}
+                full_name["full_name"] = applicant.first_name + " " + applicant.last_name
+                full_names.append(full_name)
+        return full_names
 
     # Insert a the Applicant into Database.applicants_data,
     # and return a filtered list, where we only add the data of Markus.
@@ -50,7 +64,11 @@ class Applicant():
     # }]
     @classmethod
     def _6_inserting_a_new_applicant(cls):
-        pass
+        new_applicant = [11, 'Markus', 'Schaffarzyk', '003620/725-2666', 'djnovus@groovecoverage.com', 54823]
+        from db import Database
+        Database.applicants_data.append(new_applicant)
+        insert_data = [cls.get_all()[10].__dict__]
+        return insert_data
 
     # Update an Applicant in the applicants_data, and returns a filtered dictionary list for checking.
     # Story: Jemima Foreman, an applicant called us, that her phone number changed to: 003670/223-7459
@@ -59,7 +77,12 @@ class Applicant():
     # }]
     @classmethod
     def _7_updating_data(cls):
-        pass
+        applicant_data = Applicant.get_all()
+        for applicant in applicant_data:
+            if applicant.first_name == "Jemima" and applicant.last_name == "Foreman": 
+                applicant.phone_number = "003670/223-7459"
+                filtered_list = [{"phone_number": applicant.phone_number}]
+                return filtered_list
 
     # Delete lines from the applicants_data, based on a filter condition
     # Story: Arsenio, an applicant called us, that he and his friend applied to Codecool.
@@ -70,4 +93,11 @@ class Applicant():
     # example: 2
     @classmethod
     def _8_deleting_applicants(cls):
-        pass
+        from db import Database
+        applicant_data = Applicant.get_all()
+        number_of_occurences = 0
+        for applicant in applicant_data:
+            if "mauriseau.net" in applicant.email:
+                number_of_occurences += 1
+                del Database.applicants_data
+        return number_of_occurences
